@@ -64,7 +64,7 @@ class Matcher:
         dist = dist + np.where(self.history["Sex"] != query["Sex"], SEX_PENALTY, 0.0)
         dist = dist + np.where(self.history["Site"] != query["Site"], SITE_PENALTY, 0.0)
 
-        out = self.history.assign(_dist=dist.values)
+        out = self.history.assign(_dist=dist)
         # One row per Salamander ID: keep the closest record of each animal.
         out = out.sort_values("_dist").drop_duplicates("Salamander ID").head(k).copy()
         out["Similarity"] = (100 * np.exp(-out["_dist"] / SIMILARITY_SCALE)).round(1)
